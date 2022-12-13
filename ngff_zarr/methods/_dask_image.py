@@ -100,7 +100,7 @@ def _downsample_dask_image(
     import dask_image.ndfilters
     import dask_image.ndinterp
 
-    multiscales = [
+    multiscale = [
         ngff_image,
     ]
     previous_image = ngff_image
@@ -188,6 +188,6 @@ def _downsample_dask_image(
         previous_image = NgffImage(
             downscaled_array, dims, output_scale, output_translation
         )
-        multiscales.append(previous_image)
+        multiscale.append(previous_image)
 
-    return multiscales
+    return multiscale

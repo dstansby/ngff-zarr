@@ -1,7 +1,6 @@
 from typing import Union, Optional, Sequence, Mapping, Dict, Tuple, Any, List
 from typing_extensions import Literal
 from collections.abc import MutableMapping
-from dataclasses import dataclass
 
 from zarr.core import Array as ZarrArray
 from numpy.typing import ArrayLike
@@ -13,11 +12,7 @@ from .to_ngff_image import to_ngff_image
 from .ngff_image import NgffImage
 from .zarr_metadata import Metadata, Axis, Translation, Scale, Dataset
 from .methods import Methods
-
-@dataclass
-class Multiscales:
-    images: List[NgffImage]
-    metadata: Metadata
+from .multiscale import Multiscale
 
 def _ngff_image_scale_factors(ngff_image, min_length):
     sizes = { d: s for d, s in zip(ngff_image.dims, ngff_image.data.shape) }
@@ -42,7 +37,7 @@ def _ngff_image_scale_factors(ngff_image, min_length):
 
     return scale_factors
 
-def to_multiscales(
+def to_multiscale(
     data: Union[NgffImage, ArrayLike, MutableMapping, str, ZarrArray],
     scale_factors: Union[int, Sequence[Union[Dict[str, int], int]]] = 64,
     method: Optional[Methods] = None,
@@ -55,7 +50,7 @@ def to_multiscales(
             Mapping[Any, Union[None, int, Tuple[int, ...]]],
         ]
     ] = None,
-) -> Multiscales:
+) -> Multiscale:
     """
     Generate multiple resolution scales for the OME-NGFF standard data model.
 
@@ -74,8 +69,8 @@ def to_multiscales(
     Returns
     -------
 
-    multiscales: Multiscales
-        NgffImage for each resolution and NGFF multiscales metadata
+    multiscale: Multiscale
+        NgffImage for each resolution and NGFF multiscale metadata
     """
     image = data
     if isinstance(data, NgffImage):
@@ -158,5 +153,5 @@ def to_multiscales(
         datasets.append(dataset)
     metadata = Metadata(axes=axes, datasets=datasets, name=ngff_image.name)
 
-    multiscales = Multiscales(images, metadata)
-    return multiscales
+    multiscale = Multiscale(images, metadata)
+    return multiscale

@@ -1,4 +1,4 @@
-from typing import Union, Optional
+from typing import Union, Optional, List
 from collections.abc import MutableMapping
 from pathlib import Path
 from dataclasses import asdict
@@ -7,11 +7,11 @@ from zarr.storage import BaseStore
 import zarr
 import dask.array
 
-from .to_multiscales import Multiscales
+from .multiscale import Multiscale
 
 def to_ngff_zarr(
     store: Union[MutableMapping, str, Path, BaseStore],
-    multiscales: Multiscales,
+    multiscales: Union[Multiscale, List[Multiscale]],
     compute: bool = True,
     overwrite: bool = True,
     chunk_store: Optional[Union[MutableMapping, str, Path, BaseStore]] = None,
@@ -23,8 +23,8 @@ def to_ngff_zarr(
     store : MutableMapping, str or Path, zarr.storage.BaseStore
         Store or path to directory in file system.
 
-    multiscales: Multiscales
-        Multiscales OME-NGFF image pixel data and metadata. Can be generated with ngff_zarr.to_multiscales.
+    multiscale: Multiscale
+        Multiscale OME-NGFF image pixel data and metadata. Can be generated with ngff_zarr.to_multiscale.
 
     compute: Boolean, optional
         Compute the result instead of just building the Dask task graph.
@@ -48,7 +48,7 @@ def to_ngff_zarr(
     """
 
     root = zarr.group(store, overwrite=overwrite, chunk_store=chunk_store)
-    metadata_dict = asdict(multiscales.metadata)
+    metadata_dict = asdict(multiscale.metadata)
     metadata_dict["@type"] = "ngff:Image"
     root.attrs["multiscales"] = [metadata_dict]
 
