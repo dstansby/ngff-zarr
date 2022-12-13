@@ -47,6 +47,9 @@ path = "ngff_zarr/__about__.py"
 dask-image = [
     "dask-image",
 ]
+fsspec = [
+    "fsspec",
+]
 test = [
     "pytest",
     "pooch",
