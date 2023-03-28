@@ -5,6 +5,7 @@
 from .to_ngff_image import to_ngff_image
 from .from_ngff_zarr import from_ngff_zarr
 from .itk_image_to_ngff_image import itk_image_to_ngff_image
+from .tifffile_to_multiscales import tifffile_to_multiscales
 from .detect_cli_input_backend import detect_cli_input_backend, ConversionBackend
 from .cli_input_to_ngff_image import cli_input_to_ngff_image
 from .__about__ import __version__
@@ -21,6 +22,7 @@ __all__ = [
     "to_ngff_image",
     "from_ngff_image",
     "itk_image_to_ngff_image",
+    "tifffile_to_multiscales",
     "to_multiscales",
     "Multiscales",
     "Methods",

@@ -26,6 +26,7 @@ from .to_ngff_zarr import to_ngff_zarr
 from .from_ngff_zarr import from_ngff_zarr
 from .cli_input_to_ngff_image import cli_input_to_ngff_image
 from .detect_cli_input_backend import detect_cli_input_backend, ConversionBackend, conversion_backends_values
+from .tifffile_to_multiscales import tifffile_to_multiscales
 from .methods import Methods, methods_values
 from .rich_dask_progress import NgffProgress, NgffProgressCallback
 from .config import config
@@ -113,6 +114,8 @@ def main():
         if input_backend is ConversionBackend.NGFF_ZARR:
             store = zarr.storage.DirectoryStore(args.input[0])
             multiscales = from_ngff_zarr(store)
+        elif input_backend is ConversionBackend.TIFFFILE:
+            multiscales = tifffile_to_multiscales(args.input)
         else:
             # Generate NgffImage
             ngff_image = cli_input_to_ngff_image(input_backend, args.input)
