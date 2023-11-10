@@ -93,7 +93,7 @@ def _itk_blur_and_downsample(
 
     # Construct pipeline
     smoothing_filter = smoothing_filter_template.New(
-        image, sigma_array=sigma_values, use_image_spacing=False
+        image, sigma_array=sigma_values, use_image_spacing=True
     )
 
     if interpolator_name == "LinearInterpolateImageFunction":
